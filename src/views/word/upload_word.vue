@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+  <el-tabs v-model="activeName" type="card">
 
     <el-tab-pane label="execel上传" name="first">
         <el-upload
@@ -17,8 +17,9 @@
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击选择</em></div>
           <div class="el-upload__tip"  slot="tip">上传excel文件</div>
+          <div class="upload_button"  slot="tip"><el-button  size="small" type="success" @click="submitUpload">上传</el-button></div>
         </el-upload>
-        <el-button class="upload_button"  size="small" type="success" @click="submitUpload">上传</el-button>
+        <!--<el-button class="upload_button"  size="small" type="success" @click="submitUpload">上传</el-button>-->
 
     </el-tab-pane>
 
@@ -44,7 +45,7 @@
         beforeAvatarUpload(file) {
           console.log(file.name)
           let s = file.name.split('.')
-          const isExcel = s[1] == "xlsx"
+          const isExcel = s[1] === "xlsx"
           if(!isExcel){
             this.$message.error('上传文件只能是excel!');
           }
@@ -69,9 +70,6 @@
         handlePreview(file) {
           console.log(file);
         },
-        submitUpload() {
-          this.$refs.upload.submit();
-        },
       }
     }
 </script>
@@ -87,6 +85,6 @@
   }
   .upload_button{
     margin-top: 50px;
-    margin-left: 380px;
+    text-align: center;
   }
 </style>
