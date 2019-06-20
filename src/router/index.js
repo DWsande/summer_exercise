@@ -30,6 +30,16 @@ export default new Router({
           path: '/word/paper',
           name: 'wordpaper',
           component: () =>import('@/views/word/wordpaper'),
+        },
+        {
+          path: '/composition/nice',
+          name: 'composition',
+          component: () =>import('@/views/composition/composition'),
+        },
+        {
+          path: '/composition/upload',
+          name: 'upload_composition',
+          component: () =>import('@/views/composition/upload_composition'),
         }
       ]
     }

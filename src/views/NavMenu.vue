@@ -21,7 +21,7 @@
             <el-menu-item-group>
               <el-menu-item index="/word/paper">单词纸</el-menu-item>
               <el-menu-item index="/word/list">词库</el-menu-item>
-              <el-menu-item index="/word/upload">上传文件</el-menu-item>
+              <el-menu-item index="/word/upload">生成</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
@@ -30,8 +30,8 @@
               <span>作文</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="/compostion">优秀作文</el-menu-item>
-              <el-menu-item index="/upload_compostion">上传作文</el-menu-item>
+              <el-menu-item index="/composition/nice">优秀作文</el-menu-item>
+              <el-menu-item index="/composition/upload">上传作文</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="3">

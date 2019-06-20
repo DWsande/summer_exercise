@@ -1,29 +1,42 @@
 <template>
-    <div>
-      <el-upload
-        class="upload-demo"
-        ref="upload"
-        drag
-        action="https://jsonplaceholder.typicode.com/posts/"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :on-success="successInform"
-        :on-error="errorInform"
-        :before-upload="beforeAvatarUpload"
-        :auto-upload="false"
-        multiple>
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">上传excel文件</div>
-      </el-upload>
-      <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-    </div>
+  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+
+    <el-tab-pane label="execel上传" name="first">
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          drag
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :on-success="successInform"
+          :on-error="errorInform"
+          :before-upload="beforeAvatarUpload"
+          :auto-upload="false"
+          multiple>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击选择</em></div>
+          <div class="el-upload__tip"  slot="tip">上传excel文件</div>
+        </el-upload>
+        <el-button class="upload_button"  size="small" type="success" @click="submitUpload">上传</el-button>
+
+    </el-tab-pane>
+
+    <el-tab-pane label="词库选择" name="second">
+
+    </el-tab-pane>
+
+  </el-tabs>
 </template>
 
 <script>
     export default {
         name: "upload_word",
-
+      data() {
+        return {
+          activeName: 'first'
+        };
+      },
       methods:{
         submitUpload() {
           this.$refs.upload.submit();
@@ -64,5 +77,16 @@
 </script>
 
 <style scoped>
-
+  .upload-demo {
+    width: 340px;
+    margin-left: 20%;
+    margin-top: 50px;
+ }
+  .el-upload__tip{
+    text-align: center;
+  }
+  .upload_button{
+    margin-top: 50px;
+    margin-left: 380px;
+  }
 </style>
