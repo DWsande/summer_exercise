@@ -19,12 +19,50 @@
           <div class="el-upload__tip"  slot="tip">上传excel文件</div>
           <div class="upload_button"  slot="tip"><el-button  size="small" type="success" @click="submitUpload">上传</el-button></div>
         </el-upload>
-        <!--<el-button class="upload_button"  size="small" type="success" @click="submitUpload">上传</el-button>-->
 
     </el-tab-pane>
-
     <el-tab-pane label="词库选择" name="second">
-
+      <el-form :label-position="labelpostion":model="formInline" :rules="rules" ref="formInline" >
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="formInline.title" placeholder="请输入标题" class="input"></el-input>
+        </el-form-item>
+        <el-form-item label="单词">
+          <el-transfer
+            filterable
+            :filter-method="filterMethod"
+            filter-placeholder="请输入单词"
+            v-model="value"
+            :data="data"
+            :titles="['词库','单词表']"
+          >
+            <template slot-scope="scope">
+            <span style="width:300px;height:50px;display:inline-block;">
+              <span style="float: left;color: red" v-if="scope.option.isImportant">{{scope.option.label}}</span>
+              <span style="float: left" v-else>{{scope.option.label}}</span>
+              <span class="switch">
+                <el-switch
+                  v-model="scope.option.mode"
+                  active-color="#13ce66"
+                  inactive-color="#2896ff"
+                  active-value="CtoE"
+                  inactive-value="EtoC"
+                  active-text="中译英"
+                  inactive-text="英译中">
+                </el-switch>
+              </span>
+            </span>
+            </template>
+            <div slot="left-footer" class="radio" >
+              <el-radio v-model="radio" label="1">备选项</el-radio>
+              <el-radio v-model="radio" label="2">备选项</el-radio>
+            </div>
+          </el-transfer>
+        </el-form-item>
+        <el-form-item class="button">
+          <el-button @click="submitForm(formInline,value)" plain >生成</el-button>
+          <el-button @click="refresh()">重置</el-button>
+        </el-form-item>
+      </el-form>
     </el-tab-pane>
 
   </el-tabs>
@@ -34,11 +72,64 @@
     export default {
         name: "upload_word",
       data() {
-        return {
-          activeName: 'first'
+        const generateData = _ => {
+          const data = [];
+          const getdata =[
+            {
+              word:'abandon',
+              id:1,
+              isImportant:true
+            },
+            {
+              word:'ability',
+              id:2,
+              isImportant:true
+            },
+            {
+              word:'able',
+              id:3,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:4,
+              isImportant:false
+            },
+
+          ]
+          getdata.forEach((word, index) => {
+            data.push({
+              label: word.word,
+              key: word.id,
+              pinyin: word.word,
+              isImportant:word.isImportant,
+              mode:"CtoE"
+            });
+          });
+          return data;
         };
+        return {
+          activeName: 'first',
+          data: generateData(),
+          datacopy:generateData(),
+          value: [],
+          radio:'1',
+          labelpostion:"top",
+          formInline: {
+            title: '',
+          },
+          rules: {
+            title: [
+              {required: true, message: '请输入默写纸标题', trigger: 'blur'},
+            ]
+          }
+        };
+
       },
       methods:{
+        filterMethod(query, item) {
+          return item.pinyin.indexOf(query) > -1;
+        },
         submitUpload() {
           this.$refs.upload.submit();
         },
@@ -50,10 +141,6 @@
             this.$message.error('上传文件只能是excel!');
           }
           return isExcel
-          // if(s[1] == "xlse")
-          //   return true
-          // else
-          //   return false
         },
         successInform(response,file,filelist){
           this.$message({
@@ -70,11 +157,41 @@
         handlePreview(file) {
           console.log(file);
         },
+        submitForm(formName,value){
+          if(!formName.title){
+            this.$message.error('标题未填写');
+            return
+          }
+          if(value.length === 0){
+            this.$message.error('单词未选择');
+            return
+          }
+          let na = [];
+          let obj = {};
+          for(let i=0 ;i<value.length;i++){
+            for (let j=0;j<=this.data.length;j++){
+              if(value[i] === this.datacopy[j].key){
+                obj = {
+                  id : this.data[j].key,
+                  mode :  this.data[j].mode
+                }
+                na.push(obj)
+                break
+              }
+            }
+          }
+          console.log(na)
+          this.$message.success('生成成功');
+        },
+        refresh(){
+          this.formInline.title = "";
+          this.value = [];
+        }
       }
     }
 </script>
 
-<style scoped>
+<style >
   .upload-demo {
     width: 340px;
     margin-left: 20%;
@@ -87,4 +204,27 @@
     margin-top: 50px;
     text-align: center;
   }
+  .radio{
+    margin-top: 10px;
+    text-align: center
+  }
+  .button{
+    margin-left: 30%;
+  }
+  .input{
+    width: 50%
+  }
+  .el-transfer-panel__list.is-filterable{
+    height: 500px;
+  }
+  .el-transfer-panel{
+    width:400px;
+    height: 500px;
+    text-align: left;
+    display: inline-block
+  }
+  .el-checkbox__label .switch{
+    float: right;
+  }
+
 </style>

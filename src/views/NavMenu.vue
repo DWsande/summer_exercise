@@ -6,7 +6,7 @@
     </el-header>
 
     <el-container style="margin-top: 20px">
-      <el-aside width="15%">
+      <el-aside width="15%" style="min-height: 500px">
         <el-menu
           :default-openeds="openlist"
           class="el-menu-vertical-demo"
