@@ -13,6 +13,7 @@
           :on-error="errorInform"
           :before-upload="beforeAvatarUpload"
           :auto-upload="false"
+          style="height: 1000px"
           multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击选择</em></div>
@@ -36,21 +37,21 @@
             :titles="['词库','单词表']"
           >
             <template slot-scope="scope">
-            <span style="width:300px;height:50px;display:inline-block;">
-              <span style="float: left;color: red" v-if="scope.option.isImportant">{{scope.option.label}}</span>
-              <span style="float: left" v-else>{{scope.option.label}}</span>
-              <span class="switch">
-                <el-switch
-                  v-model="scope.option.mode"
-                  active-color="#13ce66"
-                  inactive-color="#2896ff"
-                  active-value="CtoE"
-                  inactive-value="EtoC"
-                  active-text="中译英"
-                  inactive-text="英译中">
-                </el-switch>
-              </span>
-            </span>
+              <div  class="content">
+                <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
+                <span style="float: left;" v-else>{{scope.option.label}}</span>
+                <span class="switch">
+                  <el-switch
+                    v-model="scope.option.mode"
+                    active-color="#13ce66"
+                    inactive-color="#2896ff"
+                    active-value="CtoE"
+                    inactive-value="EtoC"
+                    active-text="中译英"
+                    inactive-text="英译中">
+                  </el-switch>
+                </span>
+              </div>
             </template>
             <div slot="left-footer" class="radio" >
               <el-radio v-model="radio" label="1">备选项</el-radio>
@@ -76,7 +77,7 @@
           const data = [];
           const getdata =[
             {
-              word:'abandon',
+              word:'abandon abandon abandon abandon abandon abandog abandon abandon abandon abandon abandon abandon abandon abandon abandon',
               id:1,
               isImportant:true
             },
@@ -93,6 +94,36 @@
             {
               word:'abnormal ',
               id:4,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:5,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:6,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:7,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:8,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:9,
+              isImportant:false
+            },
+            {
+              word:'abnormal ',
+              id:10,
               isImportant:false
             },
 
@@ -204,6 +235,30 @@
     margin-top: 50px;
     text-align: center;
   }
+  .content {
+    width:400px;
+    min-height:45px;
+    display:inline-block;
+    clear: both;
+  }
+  .content span{
+    display: -webkit-box;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    /*word-break:break-all;*/
+    white-space:normal;
+    -webkit-line-clamp:2;
+
+  }
+  .important{
+    float: left;
+    color: red;
+    width: 200px
+  }
+  .important:hover{
+    color:#409EFF;
+  }
   .radio{
     margin-top: 10px;
     text-align: center
@@ -215,11 +270,14 @@
     width: 50%
   }
   .el-transfer-panel__list.is-filterable{
-    height: 500px;
+    height: 400px;
+    padding-top:0;
+    display: block;
   }
+  /*.el-transfer-panel__item{height:30px;line-height:30px;padding-left:15px;display:block}*/
   .el-transfer-panel{
-    width:400px;
-    height: 500px;
+    width:43%;
+    height: 550px;
     text-align: left;
     display: inline-block
   }
