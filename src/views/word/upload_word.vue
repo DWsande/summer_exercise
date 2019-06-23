@@ -38,19 +38,39 @@
           >
             <template slot-scope="scope">
               <div  class="content">
-                <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
-                <span style="float: left;" v-else>{{scope.option.label}}</span>
-                <span class="switch">
-                  <el-switch
-                    v-model="scope.option.mode"
-                    active-color="#13ce66"
-                    inactive-color="#2896ff"
-                    active-value="CtoE"
-                    inactive-value="EtoC"
-                    active-text="中译英"
-                    inactive-text="英译中">
-                  </el-switch>
-                </span>
+                <el-popover trigger="hover" placement="bottom">
+                  <p>{{scope.option.label}}</p>
+                  <p>{{scope.option.chinese}}</p>
+                  <div slot="reference" class="name-wrapper">
+                    <!--<el-tag size="medium">{{ scope.row.name }}</el-tag>-->
+                    <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
+                    <span style="float: left;" v-else>{{scope.option.label}}</span>
+                    <span class="switch">
+                      <el-switch
+                        v-model="scope.option.mode"
+                        active-color="#13ce66"
+                        inactive-color="#2896ff"
+                        active-value="CtoE"
+                        inactive-value="EtoC"
+                        active-text="中译英"
+                        inactive-text="英译中">
+                      </el-switch>
+                    </span>
+                  </div>
+                </el-popover>
+                <!--<span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>-->
+                <!--<span style="float: left;" v-else>{{scope.option.label}}</span>-->
+                <!--<span class="switch">-->
+                  <!--<el-switch-->
+                    <!--v-model="scope.option.mode"-->
+                    <!--active-color="#13ce66"-->
+                    <!--inactive-color="#2896ff"-->
+                    <!--active-value="CtoE"-->
+                    <!--inactive-value="EtoC"-->
+                    <!--active-text="中译英"-->
+                    <!--inactive-text="英译中">-->
+                  <!--</el-switch>-->
+                <!--</span>-->
               </div>
             </template>
             <div slot="left-footer" class="radio" >
@@ -79,51 +99,61 @@
             {
               word:'abandon abandon abandon abandon abandon abandog abandon abandon abandon abandon abandon abandon abandon abandon abandon',
               id:1,
+              chinese:'抛弃',
               isImportant:true
             },
             {
               word:'ability',
               id:2,
+              chinese:'抛弃',
               isImportant:true
             },
             {
               word:'able',
               id:3,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:4,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:5,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:6,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:7,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:8,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:9,
+              chinese:'抛弃',
               isImportant:false
             },
             {
               word:'abnormal ',
               id:10,
+              chinese:'抛弃',
               isImportant:false
             },
 
@@ -133,6 +163,7 @@
               label: word.word,
               key: word.id,
               pinyin: word.word,
+              chinese:word.chinese,
               isImportant:word.isImportant,
               mode:"CtoE"
             });
@@ -142,7 +173,6 @@
         return {
           activeName: 'first',
           data: generateData(),
-          datacopy:generateData(),
           value: [],
           radio:'1',
           labelpostion:"top",
@@ -276,7 +306,7 @@
   }
   /*.el-transfer-panel__item{height:30px;line-height:30px;padding-left:15px;display:block}*/
   .el-transfer-panel{
-    width:43%;
+    width:500px;
     height: 550px;
     text-align: left;
     display: inline-block
