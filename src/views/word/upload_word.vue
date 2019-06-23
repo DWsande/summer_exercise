@@ -13,7 +13,6 @@
           :on-error="errorInform"
           :before-upload="beforeAvatarUpload"
           :auto-upload="false"
-          style="height: 1000px"
           multiple>
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击选择</em></div>
