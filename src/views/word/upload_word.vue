@@ -37,7 +37,7 @@
           >
             <template slot-scope="scope">
               <div  class="content">
-                <el-popover trigger="hover" placement="bottom">
+                <el-popover trigger="hover" placement="bottom" v-if="scope.option.label.length>40">
                   <p>{{scope.option.label}}</p>
                   <p>{{scope.option.chinese}}</p>
                   <div slot="reference" class="name-wrapper">
@@ -57,19 +57,21 @@
                     </span>
                   </div>
                 </el-popover>
-                <!--<span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>-->
-                <!--<span style="float: left;" v-else>{{scope.option.label}}</span>-->
-                <!--<span class="switch">-->
-                  <!--<el-switch-->
-                    <!--v-model="scope.option.mode"-->
-                    <!--active-color="#13ce66"-->
-                    <!--inactive-color="#2896ff"-->
-                    <!--active-value="CtoE"-->
-                    <!--inactive-value="EtoC"-->
-                    <!--active-text="中译英"-->
-                    <!--inactive-text="英译中">-->
-                  <!--</el-switch>-->
-                <!--</span>-->
+                <div v-else>
+                  <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
+                  <span style="float: left;" v-else>{{scope.option.label}}</span>
+                  <span class="switch">
+                    <el-switch
+                      v-model="scope.option.mode"
+                      active-color="#13ce66"
+                      inactive-color="#2896ff"
+                      active-value="CtoE"
+                      inactive-value="EtoC"
+                      active-text="中译英"
+                      inactive-text="英译中">
+                    </el-switch>
+                  </span>
+                </div>
               </div>
             </template>
             <div slot="left-footer" class="radio" >
