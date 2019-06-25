@@ -1,80 +1,246 @@
 <template>
   <div>
-    <el-input
-      class="search"
-      v-model="search"
-      size="mini"
-      placeholder="输入关键字搜索"/>
-    <el-table
-      :data="tableData.filter(data => !search || data.english.toLowerCase().includes(search.toLowerCase()))"
-      stripe
-      style="width: 100%">
-      <el-table-column
-        prop="chinese"
-        label="中文"
-        width="300">
-        <template slot-scope="scope" class="chinese">
-          <!--<a class="chinese">{{ scope.row.chinese }}</a>-->
-          <el-popover trigger="hover" placement="bottom" v-if="scope.row.chinese.length>20">
-            <p>{{scope.row.chinese}}</p>
-            <div slot="reference" class="name-wrapper">
+    <el-tabs v-model="activeName" type="card">
+      <el-tab-pane label="所有" name="first">
+        <el-input
+          class="search"
+          v-model="search"
+          size="mini"
+          placeholder="输入关键字搜索"/>
+        <el-table
+          :data="tableData.filter(data => !search || data.english.toLowerCase().includes(search.toLowerCase()))"
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="chinese"
+            label="中文"
+            width="300">
+            <template slot-scope="scope" class="chinese">
+              <!--<a class="chinese">{{ scope.row.chinese }}</a>-->
+              <el-popover trigger="hover" placement="bottom" v-if="scope.row.chinese.length>20">
+                <p>{{scope.row.chinese}}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag
+                    class="chinese"
+                    type="warning"
+                    effect="plain">
+                    <span>{{ scope.row.chinese }}</span>
+                  </el-tag>
+                </div>
+              </el-popover>
               <el-tag
-                class="chinese"
-                type="warning"
+                v-else
+                type="success"
                 effect="plain">
                 <span>{{ scope.row.chinese }}</span>
               </el-tag>
-            </div>
-          </el-popover>
-          <el-tag
-            v-else
-            type="success"
-            effect="plain">
-            <span>{{ scope.row.chinese }}</span>
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="english"
-        label="英文"
-        width="300">
-        <template slot-scope="scope" class="english">
-          <el-popover trigger="hover" placement="bottom" v-if="scope.row.english.length>20">
-            <p>{{scope.row.english}}</p>
-            <div slot="reference" class="name-wrapper">
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="english"
+            label="英文"
+            width="300">
+            <template slot-scope="scope" class="english">
+              <el-popover trigger="hover" placement="bottom" v-if="scope.row.english.length>20">
+                <p>{{scope.row.english}}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag
+                    type="warning"
+                    effect="plain">
+                    <span>{{ scope.row.english }}</span>
+                  </el-tag>
+                </div>
+              </el-popover>
               <el-tag
-                type="warning"
+                v-else
+                type="info"
                 effect="plain">
                 <span>{{ scope.row.english }}</span>
               </el-tag>
-            </div>
-          </el-popover>
-          <el-tag
-            v-else
-            type="info"
-            effect="plain">
-            <span>{{ scope.row.english }}</span>
-          </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="keep_num"
-        label="收藏"
-        sortable
-        width="150">
-        <template slot-scope="scope" class="english">
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="keep_num"
+            label="收藏"
+            sortable
+            width="150">
+            <template slot-scope="scope" class="english">
           <span style="font-size: 15px;">{{scope.row.keep_num}}
             <img v-if="scope.row.is_keep" class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-solid.svg"/>
             <img v-else class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-empty.svg"/>
           </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        sortable
-        label="添加时间">
-      </el-table-column>
-    </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="note"
+            width="150"
+            label="备注">
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            sortable
+            label="添加时间">
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="收藏" name="second">
+        <el-input
+          class="search"
+          v-model="search_k"
+          size="mini"
+          placeholder="输入关键字搜索"/>
+        <el-table
+          :data="tableData.filter(data => !search_k || data.english.toLowerCase().includes(search_k.toLowerCase()))"
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="chinese"
+            label="中文"
+            width="300">
+            <template slot-scope="scope" class="chinese">
+              <!--<a class="chinese">{{ scope.row.chinese }}</a>-->
+              <el-popover trigger="hover" placement="bottom" v-if="scope.row.chinese.length>20">
+                <p>{{scope.row.chinese}}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag
+                    class="chinese"
+                    type="warning"
+                    effect="plain">
+                    <span>{{ scope.row.chinese }}</span>
+                  </el-tag>
+                </div>
+              </el-popover>
+              <el-tag
+                v-else
+                type="success"
+                effect="plain">
+                <span>{{ scope.row.chinese }}</span>
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="english"
+            label="英文"
+            width="300">
+            <template slot-scope="scope" class="english">
+              <el-popover trigger="hover" placement="bottom" v-if="scope.row.english.length>20">
+                <p>{{scope.row.english}}</p>
+                <div slot="reference" class="name-wrapper">
+                  <el-tag
+                    type="warning"
+                    effect="plain">
+                    <span>{{ scope.row.english }}</span>
+                  </el-tag>
+                </div>
+              </el-popover>
+              <el-tag
+                v-else
+                type="info"
+                effect="plain">
+                <span>{{ scope.row.english }}</span>
+              </el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="keep_num"
+            label="收藏"
+            sortable
+            width="150">
+            <template slot-scope="scope" class="english">
+          <span style="font-size: 15px;">{{scope.row.keep_num}}
+            <img v-if="scope.row.is_keep" class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-solid.svg"/>
+            <img v-else class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-empty.svg"/>
+          </span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="note"
+            width="150"
+            label="备注">
+          </el-table-column>
+          <el-table-column
+            prop="date"
+            sortable
+            label="添加时间">
+          </el-table-column>
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
+    <!--<el-input-->
+      <!--class="search"-->
+      <!--v-model="search"-->
+      <!--size="mini"-->
+      <!--placeholder="输入关键字搜索"/>-->
+    <!--<el-table-->
+      <!--:data="tableData.filter(data => !search || data.english.toLowerCase().includes(search.toLowerCase()))"-->
+      <!--stripe-->
+      <!--style="width: 100%">-->
+      <!--<el-table-column-->
+        <!--prop="chinese"-->
+        <!--label="中文"-->
+        <!--width="300">-->
+        <!--<template slot-scope="scope" class="chinese">-->
+          <!--&lt;!&ndash;<a class="chinese">{{ scope.row.chinese }}</a>&ndash;&gt;-->
+          <!--<el-popover trigger="hover" placement="bottom" v-if="scope.row.chinese.length>20">-->
+            <!--<p>{{scope.row.chinese}}</p>-->
+            <!--<div slot="reference" class="name-wrapper">-->
+              <!--<el-tag-->
+                <!--class="chinese"-->
+                <!--type="warning"-->
+                <!--effect="plain">-->
+                <!--<span>{{ scope.row.chinese }}</span>-->
+              <!--</el-tag>-->
+            <!--</div>-->
+          <!--</el-popover>-->
+          <!--<el-tag-->
+            <!--v-else-->
+            <!--type="success"-->
+            <!--effect="plain">-->
+            <!--<span>{{ scope.row.chinese }}</span>-->
+          <!--</el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop="english"-->
+        <!--label="英文"-->
+        <!--width="300">-->
+        <!--<template slot-scope="scope" class="english">-->
+          <!--<el-popover trigger="hover" placement="bottom" v-if="scope.row.english.length>20">-->
+            <!--<p>{{scope.row.english}}</p>-->
+            <!--<div slot="reference" class="name-wrapper">-->
+              <!--<el-tag-->
+                <!--type="warning"-->
+                <!--effect="plain">-->
+                <!--<span>{{ scope.row.english }}</span>-->
+              <!--</el-tag>-->
+            <!--</div>-->
+          <!--</el-popover>-->
+          <!--<el-tag-->
+            <!--v-else-->
+            <!--type="info"-->
+            <!--effect="plain">-->
+            <!--<span>{{ scope.row.english }}</span>-->
+          <!--</el-tag>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop="keep_num"-->
+        <!--label="收藏"-->
+        <!--sortable-->
+        <!--width="150">-->
+        <!--<template slot-scope="scope" class="english">-->
+          <!--<span style="font-size: 15px;">{{scope.row.keep_num}}-->
+            <!--<img v-if="scope.row.is_keep" class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-solid.svg"/>-->
+            <!--<img v-else class="icon" @click="changekeepstatus(scope.row.id)" src="../../components/star-empty.svg"/>-->
+          <!--</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+        <!--prop="date"-->
+        <!--sortable-->
+        <!--label="添加时间">-->
+      <!--</el-table-column>-->
+    <!--</el-table>-->
   </div>
 </template>
 
@@ -83,8 +249,28 @@
         name: "wordlist",
 
       data() {
+        // const generateData = _ => {
+        //   const data = [];
+        //   const getdata = this.tableData;
+        //   console.log(getdata);
+        //   getdata.forEach((word, index) => {
+        //     if(word.is_keep){
+        //       data.push({
+        //         id: word.id,
+        //         date: word.date,
+        //         chinese: word.chinese,
+        //         english:word.english,
+        //         is_keep:word.is_keep,
+        //         keep_num:word.keep_num
+        //       });
+        //     }
+        //   });
+        //   return data;
+        // };
         return {
           search:'',
+          search_k:'',
+          activeName: 'first',
           tableData: [{
             id:1,
             date: '2016-05-02',
@@ -105,7 +291,8 @@
             chinese: '抛弃',
             english: 'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon',
             keep_num: 2,
-            is_keep:true
+            is_keep:true,
+            note:"!!!!!!!!"
           },{
             id:4,
             date: '2016-05-06',
@@ -114,7 +301,8 @@
             keep_num: 0,
             is_keep:false
           },
-          ]
+          ],
+          // tableData_keep: generateData(),
         }
       },
       methods:{
