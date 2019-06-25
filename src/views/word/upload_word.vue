@@ -32,7 +32,7 @@
             :filter-method="filterMethod"
             filter-placeholder="请输入单词"
             v-model="value"
-            :data="data"
+            :data="data.filter(wordfilter)"
             :titles="['词库','单词表']"
           >
             <template slot-scope="scope">
@@ -44,39 +44,48 @@
                     <!--<el-tag size="medium">{{ scope.row.name }}</el-tag>-->
                     <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
                     <span style="float: left;" v-else>{{scope.option.label}}</span>
-                    <span class="switch">
-                      <el-switch
-                        v-model="scope.option.mode"
-                        active-color="#13ce66"
-                        inactive-color="#2896ff"
-                        active-value="CtoE"
-                        inactive-value="EtoC"
-                        active-text="中译英"
-                        inactive-text="英译中">
-                      </el-switch>
-                    </span>
+                      <div class="block">
+                        <el-slider
+                          :max="2"
+                          v-model="scope.option.mode"
+                          :step="1"
+                          :marks="marks"
+                          :show-tooltip="false"
+                          show-stops>
+                        </el-slider>
+                      </div>
                   </div>
                 </el-popover>
                 <div v-else>
                   <span class="important" v-if="scope.option.isImportant">{{scope.option.label}}</span>
                   <span style="float: left;" v-else>{{scope.option.label}}</span>
                   <span class="switch">
-                    <el-switch
-                      v-model="scope.option.mode"
-                      active-color="#13ce66"
-                      inactive-color="#2896ff"
-                      active-value="CtoE"
-                      inactive-value="EtoC"
-                      active-text="中译英"
-                      inactive-text="英译中">
-                    </el-switch>
+                    <!--<el-switch-->
+                      <!--v-model="scope.option.mode"-->
+                      <!--active-color="#13ce66"-->
+                      <!--inactive-color="#2896ff"-->
+                      <!--active-value="CtoE"-->
+                      <!--inactive-value="EtoC"-->
+                      <!--active-text="中译英"-->
+                      <!--inactive-text="英译中">-->
+                    <!--</el-switch>-->
+                    <div class="block">
+                        <el-slider
+                          :max="2"
+                          v-model="scope.option.mode"
+                          :step="1"
+                          :marks="marks"
+                          :show-tooltip="false"
+                          show-stops>
+                        </el-slider>
+                      </div>
                   </span>
                 </div>
               </div>
             </template>
             <div slot="left-footer" class="radio" >
-              <el-radio v-model="radio" label="1">备选项</el-radio>
-              <el-radio v-model="radio" label="2">备选项</el-radio>
+              <el-radio v-model="radio" label="1">全选</el-radio>
+              <el-radio v-model="radio" label="2">已收藏</el-radio>
             </div>
           </el-transfer>
         </el-form-item>
@@ -158,7 +167,7 @@
               isImportant:false
             },
 
-          ]
+          ];
           getdata.forEach((word, index) => {
             data.push({
               label: word.word,
@@ -166,12 +175,18 @@
               pinyin: word.word,
               chinese:word.chinese,
               isImportant:word.isImportant,
-              mode:"CtoE"
+              mode:0
             });
           });
           return data;
         };
         return {
+          marks: {
+            0: 'CtoE',
+            1: 'EtoC',
+            2: 'random'
+          },
+          value1:0,
           activeName: 'first',
           data: generateData(),
           value: [],
@@ -232,7 +247,7 @@
           let obj = {};
           for(let i=0 ;i<value.length;i++){
             for (let j=0;j<=this.data.length;j++){
-              if(value[i] === this.datacopy[j].key){
+              if(value[i] === this.data[j].key){
                 obj = {
                   id : this.data[j].key,
                   mode :  this.data[j].mode
@@ -248,6 +263,14 @@
         refresh(){
           this.formInline.title = "";
           this.value = [];
+        },
+        wordfilter(value){
+          if(this.radio === '1')
+            return true;
+          if(this.radio === '2')
+          {
+            return value.isImportant;
+          }
         }
       }
     }
@@ -291,7 +314,6 @@
     color:#409EFF;
   }
   .radio{
-    margin-top: 10px;
     text-align: center
   }
   .button{
@@ -313,7 +335,14 @@
     display: inline-block
   }
   .el-checkbox__label .switch{
-    float: right;
+       float: right;
+  }
+  .block{
+    margin-left: 20px;
+    margin-right: 25px;
+    width: 100px;
+    height: 53px;
+    float: right
   }
 
 </style>
